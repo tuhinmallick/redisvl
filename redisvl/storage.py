@@ -40,10 +40,7 @@ class BaseStorage:
         Returns:
             str: The fully formed Redis key.
         """
-        if not prefix:
-            return key_value
-        else:
-            return f"{prefix}{key_separator}{key_value}"
+        return key_value if not prefix else f"{prefix}{key_separator}{key_value}"
 
     def _create_key(self, obj: Dict[str, Any], key_field: Optional[str] = None) -> str:
         """Construct a Redis key for a given object, optionally using a

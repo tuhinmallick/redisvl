@@ -124,7 +124,7 @@ def test_simple(index):
     for doc in results.docs:
         # ensure all return fields present
         assert doc.user in ["john", "derrick", "nancy", "tyler", "tim", "taimur", "joe"]
-        assert int(doc.age) in [18, 14, 94, 100, 12, 15, 35]
+        assert int(doc.age) in {18, 14, 94, 100, 12, 15, 35}
         assert doc.job in ["engineer", "doctor", "dermatologist", "CEO", "dentist"]
         assert doc.credit_score in ["high", "low", "medium"]
 
@@ -215,7 +215,7 @@ def filter_test(
 
     # set the new filter
     query.set_filter(_filter)
-    print(str(query))
+    print(query)
 
     # print(str(v) + "\n") # to print the query
     results = index.search(query.query, query_params=query.params)

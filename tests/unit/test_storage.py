@@ -6,8 +6,7 @@ from redisvl.storage import BaseStorage, HashStorage, JsonStorage
 @pytest.fixture(params=[JsonStorage, HashStorage])
 def storage_instance(request):
     StorageClass = request.param
-    instance = StorageClass(prefix="test", key_separator=":")
-    return instance
+    return StorageClass(prefix="test", key_separator=":")
 
 
 def test_key_formatting(storage_instance):

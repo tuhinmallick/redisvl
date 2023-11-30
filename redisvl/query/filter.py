@@ -359,7 +359,7 @@ class Num(FilterField):
         if not self._value:
             return "*"
 
-        if self._operator == FilterOperator.EQ or self._operator == FilterOperator.NE:
+        if self._operator in [FilterOperator.EQ, FilterOperator.NE]:
             return self.OPERATOR_MAP[self._operator] % (
                 self._field,
                 self._value,
@@ -501,9 +501,7 @@ class FilterExpression:
             return _left
         if _left == "*" != _right:
             return _right
-        if _right == "*" != _left:
-            return _left
-        return f"({_left}{operator_str}{_right})"
+        return _left if _right == "*" != _left else f"({_left}{operator_str}{_right})"
 
     def __str__(self) -> str:
         # top level check that allows recursive calls to __str__

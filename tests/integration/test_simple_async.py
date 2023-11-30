@@ -86,7 +86,7 @@ async def test_simple(async_client):
     # make sure correct users returned
     # users = list(results.docs)
     # print(len(users))
-    users = [doc for doc in results.docs]
+    users = list(results.docs)
     assert users[0].user in ["john", "mary"]
     assert users[1].user in ["john", "mary"]
 

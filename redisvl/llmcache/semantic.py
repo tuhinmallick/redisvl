@@ -132,11 +132,11 @@ class SemanticCache(BaseLLMCache):
         Raises:
             ValueError: If the threshold is not between 0 and 1.
         """
-        if not 0 <= float(distance_threshold) <= 1:
+        if not 0 <= distance_threshold <= 1:
             raise ValueError(
                 f"Distance must be between 0 and 1, got {distance_threshold}"
             )
-        self._distance_threshold = float(distance_threshold)
+        self._distance_threshold = distance_threshold
 
     def clear(self) -> None:
         """Clear the cache of all keys while preserving the index"""
@@ -199,14 +199,7 @@ class SemanticCache(BaseLLMCache):
         # Use provided vector or create from prompt
         vector = vector or self._vectorize_prompt(prompt)
 
-        # Check for cache hits by searching the cache
-        cache_hits = self._search_cache(vector, return_fields, num_results)
-
-        if cache_hits == []:
-            # TODO: I think an exception here is too chatty from a user perspective. Let's just return empty?
-            pass
-
-        return cache_hits
+        return self._search_cache(vector, return_fields, num_results)
 
     def _vectorize_prompt(self, prompt: Optional[str]) -> List[float]:
         """Converts a text prompt to its vector representation using the

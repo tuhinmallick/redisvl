@@ -54,7 +54,7 @@ def test_tag_filter_varied(operation, tags, expected):
 
 
 def test_nullable():
-    tag = Tag("tag_field") == None
+    tag = Tag("tag_field") is None
     assert str(tag) == "*"
 
     tag = Tag("tag_field") != None
@@ -104,7 +104,7 @@ def test_numeric_filter():
     nf = Num("numeric_field") <= None
     assert str(nf) == "*"
 
-    nf = Num("numeric_field") == None
+    nf = Num("numeric_field") is None
     assert str(nf) == "*"
 
     nf = Num("numeric_field") != None
@@ -244,19 +244,19 @@ def test_filters_combination():
     assert str(tf1 | tf2) == str(tf2)
 
     # test combining filters with None values and empty strings
-    tf1 = Tag("tag_field") == None
+    tf1 = Tag("tag_field") is None
     tf2 = Tag("tag_field") == ""
     assert str(tf1 & tf2) == "*"
 
-    tf1 = Tag("tag_field") == None
+    tf1 = Tag("tag_field") is None
     tf2 = Tag("tag_field") == "tag"
     assert str(tf1 & tf2) == str(tf2)
 
-    tf1 = Tag("tag_field") == None
+    tf1 = Tag("tag_field") is None
     tf2 = Tag("tag_field") == ["tag1", "tag2"]
     assert str(tf1 & tf2) == str(tf2)
 
-    tf1 = Tag("tag_field") == None
+    tf1 = Tag("tag_field") is None
     tf2 = Tag("tag_field") != None
     assert str(tf1 & tf2) == "*"
 
@@ -266,10 +266,10 @@ def test_filters_combination():
     assert str(tf1 & tf2 & tf3) == str(tf2 & tf3)
 
     # test none filters for Tag Num Text and Geo
-    tf1 = Tag("tag_field") == None
-    tf2 = Num("num_field") == None
-    tf3 = Text("text_field") == None
-    tf4 = Geo("geo_field") == None
+    tf1 = Tag("tag_field") is None
+    tf2 = Num("num_field") is None
+    tf3 = Text("text_field") is None
+    tf4 = Geo("geo_field") is None
     assert str(tf1 & tf2 & tf3 & tf4) == "*"
 
     tf1 = Tag("tag_field") != None
@@ -281,7 +281,7 @@ def test_filters_combination():
     # test combinations of real and None filters across tag
     # text and geo filters
     tf1 = Tag("tag_field") == "tag"
-    tf2 = Num("num_field") == None
-    tf3 = Text("text_field") == None
+    tf2 = Num("num_field") is None
+    tf3 = Text("text_field") is None
     tf4 = Geo("geo_field") == GeoRadius(1.0, 2.0, 3, "km")
     assert str(tf1 & tf2 & tf3 & tf4) == str(tf1 & tf4)
