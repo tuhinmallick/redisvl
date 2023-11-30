@@ -96,7 +96,7 @@ class VertexAITextVectorizer(BaseVectorizer):
         """
         if not isinstance(texts, list):
             raise TypeError("Must pass in a list of str values to embed.")
-        if len(texts) > 0 and not isinstance(texts[0], str):
+        if texts and not isinstance(texts[0], str):
             raise TypeError("Must pass in a list of str values to embed.")
 
         embeddings: List = []

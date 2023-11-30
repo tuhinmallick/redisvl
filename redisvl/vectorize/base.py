@@ -64,6 +64,4 @@ class BaseVectorizer:
                 yield seq[pos : pos + size]
 
     def _process_embedding(self, embedding: List[float], as_buffer: bool):
-        if as_buffer:
-            return array_to_buffer(embedding)
-        return embedding
+        return array_to_buffer(embedding) if as_buffer else embedding

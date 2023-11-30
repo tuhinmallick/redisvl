@@ -7,9 +7,8 @@ logger = get_logger("[RedisVL]")
 
 
 def create_redis_url(args: Namespace) -> str:
-    env_address = os.getenv("REDIS_URL")
-    if env_address:
-        logger.info(f"Using Redis address from environment variable, REDIS_URL")
+    if env_address := os.getenv("REDIS_URL"):
+        logger.info("Using Redis address from environment variable, REDIS_URL")
         return env_address
     elif args.url:
         return args.url
@@ -20,9 +19,9 @@ def create_redis_url(args: Namespace) -> str:
         if args.user:
             url += args.user
             if args.password:
-                url += ":" + args.password
+                url += f":{args.password}"
             url += "@"
-        url += args.host + ":" + str(args.port)
+        url += f"{args.host}:{str(args.port)}"
         return url
 
 

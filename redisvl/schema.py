@@ -151,8 +151,7 @@ class SchemaModel(BaseModel):
         for field_name in self.fields.__fields__.keys():
             field_group = getattr(self.fields, field_name)
             if field_group is not None:
-                for field in field_group:
-                    redis_fields.append(field.as_field())
+                redis_fields.extend(field.as_field() for field in field_group)
         return redis_fields
 
 
@@ -232,8 +231,7 @@ class SchemaGenerator:
                 continue
 
             if isinstance(field_type, str):
-                field_class = field_classes.get(field_type)
-                if field_class:
+                if field_class := field_classes.get(field_type):
                     result[field_type].append(
                         field_class(name=key).dict(exclude_none=True)
                     )

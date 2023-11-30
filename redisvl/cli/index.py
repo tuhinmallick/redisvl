@@ -84,7 +84,7 @@ class Index:
         indices = convert_bytes(conn.execute_command("FT._LIST"))
         logger.info("Indices:")
         for i, index in enumerate(indices):
-            logger.info(str(i + 1) + ". " + index)
+            logger.info(f"{str(i + 1)}. {index}")
 
     def delete(self, args: Namespace, drop=False):
         """Delete an index.
@@ -170,10 +170,8 @@ def _display_in_table(index_info, output_format="rounded_outline"):
             options = make_dict(attrs)
             for k, v in options.items():
                 if k not in ["identifier", "attribute", "type"]:
-                    headers.append("Field Option")
-                    headers.append("Option Value")
-                    values.append(k)
-                    values.append(v)
+                    headers.extend(("Field Option", "Option Value"))
+                    values.extend((k, v))
         attr_values.append(values)
 
     # Display the attributes in tabular format

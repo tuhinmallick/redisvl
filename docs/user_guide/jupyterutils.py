@@ -9,9 +9,7 @@ def table_print(dict_list):
     # Getting column names (dictionary keys) using the first dictionary
     columns = dict_list[0].keys()
 
-    # HTML table header
-    html = '<table><tr><th>'
-    html += '</th><th>'.join(columns)
+    html = '<table><tr><th>' + '</th><th>'.join(columns)
     html += '</th></tr>'
 
     # HTML table content

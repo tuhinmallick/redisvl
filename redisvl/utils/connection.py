@@ -36,7 +36,7 @@ def get_address_from_env():
     Returns:
         str: Redis URL
     """
-    addr = os.getenv("REDIS_URL", None)
-    if not addr:
+    if addr := os.getenv("REDIS_URL", None):
+        return addr
+    else:
         raise ValueError("REDIS_URL env var not set")
-    return addr

@@ -80,8 +80,7 @@ class CountQuery(BaseQuery):
             redis.commands.search.query.Query: The query object.
         """
         base_query = str(self._filter)
-        query = Query(base_query).no_content().dialect(2)
-        return query
+        return Query(base_query).no_content().dialect(2)
 
     @property
     def params(self) -> Dict[str, Any]:
@@ -133,13 +132,12 @@ class FilterQuery(BaseQuery):
             redis.commands.search.query.Query: The query object.
         """
         base_query = str(self._filter)
-        query = (
+        return (
             Query(base_query)
             .return_fields(*self._return_fields)
             .paging(0, self._num_results)
             .dialect(2)
         )
-        return query
 
     @property
     def params(self) -> Dict[str, Any]:
@@ -228,18 +226,15 @@ class VectorQuery(BaseVectorQuery):
         Returns:
             redis.commands.search.query.Query: The query object.
         """
-        _filter = "*"
-        if self._filter:
-            _filter = str(self._filter)
+        _filter = str(self._filter) if self._filter else "*"
         base_query = f"{_filter}=>[KNN {self._num_results} @{self._field} ${self.VECTOR_PARAM} AS {self.DISTANCE_ID}]"
-        query = (
+        return (
             Query(base_query)
             .return_fields(*self._return_fields)
             .sort_by(self.DISTANCE_ID)
             .paging(0, self._num_results)
             .dialect(2)
         )
-        return query
 
     @property
     def params(self) -> Dict[str, Any]:
@@ -329,15 +324,11 @@ class RangeQuery(BaseVectorQuery):
         """
         base_query = f"@{self._field}:[VECTOR_RANGE ${self.DISTANCE_THRESHOLD_PARAM} ${self.VECTOR_PARAM}]"
 
-        _filter = "*"
-        if self._filter:
-            _filter = str(self._filter)
-
+        _filter = str(self._filter) if self._filter else "*"
         # Avoid appending a filter that yields '*' as it will cause a syntax error in Redis query language
         if _filter != "*":
             base_query = (
-                "("
-                + base_query
+                f"({base_query}"
                 + f"=>{{$yield_distance_as: {self.DISTANCE_ID}}} "
                 + _filter
                 + ")"
